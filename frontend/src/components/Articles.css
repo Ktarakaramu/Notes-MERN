@@ -1,0 +1,37 @@
+.article-list-item {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 5%;
+}
+h1 {
+  text-align: center;
+}
+.articleTitle {
+  /* padding: 2%; */
+  color: #285db0;
+  /* text-align: center; */
+}
+.likes {
+  display: flex;
+}
+
+.thumbs-up {
+  margin-left: 5px;
+  cursor: pointer;
+  /* font-size: 30px !important; */
+}
+.thumbs-up :hover {
+  color: #285db0;
+}
+
+.thumbs-up.active {
+  fill: #285db0;
+}
+
+.deleteP {
+  display: flex;
+  justify-content: space-between;
+}
+.deleteBtn {
+  color: #db2e1a;
+  cursor: pointer;
+}

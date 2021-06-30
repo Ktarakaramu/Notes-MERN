@@ -1,0 +1,319 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Articles Project",
+    "description": "Articles Project Application API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3002",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "users",
+      "description": "API for CRUD operations on users"
+    },
+    {
+      "name": "articles",
+      "description": "API for CRUD operations on articles"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/users/login": {
+      "post": {
+        "summary": "Login for the user.",
+        "description": "Login for the user and returns authentication token.",
+        "tags": [
+          "users"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User Details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userlogin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": "aplication/json",
+            "schema": {
+              "$ref": "#/definitions/userloginresponse"
+            }
+          }
+        }
+      }
+    },
+    "/articles": {
+      "get": {
+        "summary": "Get all articles in the system.",
+        "description": "Returns all articles in the system.",
+        "tags": [
+          "articles"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": "aplication/json",
+            "schema": {
+              "$ref": "#/definitions/articles"
+            }
+          }
+        }
+      }
+    },
+    "/articles/create": {
+      "post": {
+        "summary": "Creates a new article in the system.",
+        "description": "Creates a new article in the system.",
+        "tags": [
+          "articles"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Article details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/articlecreate"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-auth-token",
+            "description": "Authentication Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": "aplication/json",
+            "schema": {
+              "properties": {
+                "id": {
+                  "description": "Id of the newly created article",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/articles/upvote": {
+      "put": {
+        "summary": "Upvotes the article in the system.",
+        "description": "Upvotes the article in the system.",
+        "tags": [
+          "articles"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Article details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/articleupvote"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-auth-token",
+            "description": "Authentication Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/articles/delete/{articleid}": {
+      "delete": {
+        "summary": "Deletes an article from the system.",
+        "description": "Deletes an aritlce from the system.",
+        "tags": [
+          "articles"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "articleid",
+            "description": "Article ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-auth-token",
+            "description": "Authentication Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": "aplication/json",
+            "schema": {
+              "properties": {
+                "article": {
+                  "description": "Article information",
+                  "schema": {
+                    "$ref": "#/definitions/article"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "article": {
+      "required": [
+        "_id"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "__v": {
+          "type": "integer",
+          "default": 0
+        },
+        "content": {
+          "type": "string"
+        },
+        "upvotes": {
+          "type": "array",
+          "default": []
+        }
+      }
+    },
+    "articlecreate": {
+      "required": [
+        "title",
+        "content"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "default":"Test article title"
+        },
+        "content": {
+          "type": "string",
+          "default" : "Test article content"
+        }
+      }
+    },
+    "articleupvote": {
+      "required": [
+        "article",
+        "userId"
+      ],
+      "properties": {
+        "article": {
+          "$ref": "#/definitions/article"
+        },
+        "userId": {
+          "type": "string",
+          "default" : ""
+        }
+      }
+    },
+    "articles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/article"
+      }
+    },
+    "userlogin": {
+      "required": [
+        "email",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "default": "testid@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "default": "testpassword"
+        }
+      }
+    },
+    "userloginresponse": {
+      "required": [
+        "token",
+        "user"
+      ],
+      "properties": {
+        "user": {
+          "schema": {
+            "$ref": "#/definitions/user"
+          },
+          "default" : "{'id':'', 'displayname':''}"
+        },
+        "token": {
+          "type": "string",
+          "description": "Authentication token",
+          "default" : ""
+        }
+      }
+    },
+    "user": {
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "uniqueItems": true,
+          "default" : "Test User ID"
+        },
+        "displayname": {
+          "type": "string",
+          "default" : "Test User Display Name"
+        }
+      }
+    }
+  }
+}
